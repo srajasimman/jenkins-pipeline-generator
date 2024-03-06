@@ -1,0 +1,74 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'GIT_REPO', defaultValue: '{{ repo_url | default("https://github.com/yourusername/yourrepo.git") }}', description: 'Git Repository URL')
+        string(name: 'GIT_BRANCH', defaultValue: '{{ branch | default("main") }}', description: 'Branch to build')
+    }
+    options {
+        timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        timestamps()
+        githubProjectProperty(
+            displayName: '',
+            projectUrlStr: '${params.GIT_REPO}'
+        )
+    }
+    def docker_image = "${env.JOB_NAME.split('/')[1]}:${env.BUILD_NUMBER}"
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    git (url: "${params.GIT_REPO}", branch: "${params.GIT_BRANCH}")
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    {% if language == 'java' and build_tool == 'maven' %}
+                    sh 'mvn clean package -DskipTests'
+                    artifact 'target/*.jar'
+                    {% elif language == 'java' and build_tool == 'gradle' %}
+                    sh 'gradle clean build'
+                    artifact 'build/libs/*.jar'
+                    {% elif language == 'javascript' %}
+                    sh 'npm install'
+                    {% endif %}
+                }
+            }
+        }
+        stage('Create Docker Image') {
+            steps {
+                script {
+                    {% if language == 'java'%}
+                    sh (script: '
+                    cat <<EOF > Dockerfile
+                    FROM openjdk:17-jdk-slim
+                    WORKDIR /app
+                    COPY target/*.jar app.jar
+                    ENTRYPOINT ["java", "-jar", "app.jar"]
+                    ')
+                    {% elif language == 'javascript' %}
+                    sh (script: '
+                    cat <<EOF > Dockerfile
+                    FROM node:16
+                    WORKDIR /app
+                    COPY package*.json ./
+                    RUN npm install
+                    COPY . .
+                    ENTRYPOINT ["npm", "start"]
+                    ')
+                    {% endif %}
+                }
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                script {
+                    sh 'docker build -t ${docker_image} .'
+                }
+            }
+        }
+    }
+}
