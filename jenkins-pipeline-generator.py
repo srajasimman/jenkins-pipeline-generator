@@ -29,7 +29,7 @@ def main():
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description='Generate Jenkins pipeline file')
     parser.add_argument('-r', '--repo-url', type=str, help='Repository URL', dest='repo_url', required=True)
-    parser.add_argument('-b', '--branch', type=str, help='Branch', dest='branch', required=True)
+    parser.add_argument('-b', '--branch', type=str, help='Branch', dest='branch')
     parser.add_argument('-l', '--language', type=str, help='Language', dest='language', required=True, choices=options['languages'])
     parser.add_argument('-t', '--build-tool', type=str, help='Build tool', dest='build_tool', required=True, choices=options['build_tools'])
     
