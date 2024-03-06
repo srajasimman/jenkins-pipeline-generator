@@ -19,10 +19,10 @@ This tool creates a Jenkins pipeline file tailored to your project's needs. It a
 
 ## Options
 - `-h, --help`: Displays help message and exits.
-- `-r REPO_URL, --repo-url REPO_URL`: Specifies the repository URL.
-- `-b BRANCH, --branch BRANCH`: Specifies the branch name.
-- `-l {java,javascript}, --language {java,javascript}`: Specifies the programming language (either Java or JavaScript).
-- `-t {maven,gradle,npm}, --build-tool {maven,gradle,npm}`: Specifies the build tool (either Maven or Gradle).
+- `-r, --repo-url REPO_URL`: Specifies the repository URL.
+- `-b, --branch BRANCH`: Specifies the branch name.
+- `-l, --language {java,javascript}`: Specifies the programming language (either Java or JavaScript).
+- `-t, --build-tool {maven,gradle,npm}`: Specifies the build tool (either Maven or Gradle).
 
 ## Example
 ```bash
