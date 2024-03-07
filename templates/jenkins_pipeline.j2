@@ -15,8 +15,9 @@ pipeline {
         )
     }
     def job_name = "${env.JOB_NAME.split('/')[-1]}"
+    def commit_hash = "${env.GIT_COMMIT.substring(0, 7)}"
     def build_number = "${env.BUILD_NUMBER}"
-    def docker_image = "${job_name}:${build_number}"
+    def docker_image = "${job_name}:${commit_hash}-${build_number}"
     stages {
         stage('Checkout') {
             steps {
