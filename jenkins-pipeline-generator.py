@@ -2,7 +2,7 @@ import argparse
 from jinja2 import Environment, FileSystemLoader
 import os
 
-def generate_build_pipeline(repo_url, branch, language, build_tool):
+def generate_build_pipeline(repo_url, branch, language, build_tool, deploy=False):
     # Set up Jinja environment
     template_dir = os.path.join(os.path.dirname(__file__), 'templates')
     env = Environment(loader=FileSystemLoader(template_dir))
@@ -16,6 +16,7 @@ def generate_build_pipeline(repo_url, branch, language, build_tool):
         branch=branch,
         language=language,
         build_tool=build_tool,
+        deploy=deploy
     )
 
     return pipeline_script
@@ -32,6 +33,7 @@ def main():
     parser.add_argument('-b', '--branch', type=str, help='Branch', dest='branch')
     parser.add_argument('-l', '--language', type=str, help='Language', dest='language', required=True, choices=options['languages'])
     parser.add_argument('-t', '--build-tool', type=str, help='Build tool', dest='build_tool', required=True, choices=options['build_tools'])
+    parser.add_argument('-d', '--deploy', type=bool, help='Deploy', dest='deploy', default=False)
     
     args = parser.parse_args()
 
@@ -51,6 +53,7 @@ def main():
         args.branch,
         args.language,
         args.build_tool,
+        args.deploy
     )
 
     # Print the generated pipeline script
