@@ -34,6 +34,8 @@ pipeline {
                     artifact 'build/libs/*.jar'
                     {% elif language == 'javascript' %}
                     sh 'npm install'
+                    {% elif language == 'python' %}
+                    sh 'pip install -r requirements.txt'
                     {% endif %}
                 }
             }
@@ -41,25 +43,36 @@ pipeline {
         stage('Create Docker Image') {
             steps {
                 script {
-                    {% if language == 'java'%}
-                    sh (script: '
-                    cat <<EOF > Dockerfile
-                    FROM openjdk:17-jdk-slim
-                    WORKDIR /app
-                    COPY target/*.jar app.jar
-                    ENTRYPOINT ["java", "-jar", "app.jar"]
-                    ')
-                    {% elif language == 'javascript' %}
-                    sh (script: '
-                    cat <<EOF > Dockerfile
-                    FROM node:16
-                    WORKDIR /app
-                    COPY package*.json ./
-                    RUN npm install
-                    COPY . .
-                    ENTRYPOINT ["npm", "start"]
-                    ')
-                    {% endif %}
+                    if (!fileExists('Dockerfile')) {
+                        {% if language == 'java'%}
+                        writeFile(file: 'Dockerfile', text: '''
+                        FROM openjdk:17-jdk-slim
+                        WORKDIR /app
+                        COPY target/*.jar app.jar
+                        ENTRYPOINT ["java", "-jar", "app.jar"]
+                        ''')
+                        {% elif language == 'javascript' %}
+                        writeFile(file: 'Dockerfile', text: '''
+                        FROM node:16
+                        WORKDIR /app
+                        COPY package*.json ./
+                        RUN npm install
+                        COPY . .
+                        ENTRYPOINT ["npm", "start"]
+                        ''')
+                        {% elif language == 'python' %}
+                        writeFile(file: 'Dockerfile', text: '''
+                        FROM python:3.9
+                        WORKDIR /app
+                        COPY requirements.txt ./
+                        RUN pip install -r requirements.txt
+                        COPY . .
+                        ENTRYPOINT ["python", "app.py"]
+                        ''')
+                        {% endif %}
+                    else {
+                        print('Dockerfile already exists')
+                    }
                 }
             }
         }

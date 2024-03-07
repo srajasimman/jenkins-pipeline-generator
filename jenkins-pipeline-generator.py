@@ -2,7 +2,7 @@ import argparse
 from jinja2 import Environment, FileSystemLoader
 import os
 
-def generate_pipeline(repo_url, branch, language, build_tool):
+def generate_build_pipeline(repo_url, branch, language, build_tool):
     # Set up Jinja environment
     template_dir = os.path.join(os.path.dirname(__file__), 'templates')
     env = Environment(loader=FileSystemLoader(template_dir))
@@ -22,8 +22,8 @@ def generate_pipeline(repo_url, branch, language, build_tool):
 
 def main():
     options = {
-        'languages': ['java', 'javascript'],
-        'build_tools': ['maven', 'gradle', 'npm'],
+        'languages': ['java', 'javascript', 'python'],
+        'build_tools': ['maven', 'gradle', 'npm', 'pip'],
     }
 
     # Parse command-line arguments
@@ -41,9 +41,12 @@ def main():
     
     if args.language == 'javascript' and args.build_tool != 'npm':
         parser.error( "\033[91m" + args.build_tool + '\033[0m is a Invalid build tool for Javascript language')
+    
+    if args.language == 'python' and args.build_tool != 'pip':
+        parser.error( "\033[91m" + args.build_tool + '\033[0m is a Invalid build tool for Python language')
 
     # Generate Jenkins pipeline script
-    pipeline_script = generate_pipeline(
+    pipeline_script = generate_build_pipeline(
         args.repo_url,
         args.branch,
         args.language,

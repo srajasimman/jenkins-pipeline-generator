@@ -8,11 +8,11 @@ usage: jenkins-pipeline-generator.py [-h] -r REPO_URL -b BRANCH -l {java,javascr
 Generate Jenkins pipeline file
 
 options:
-  -h, --help                             show this help message and exit
-  -r, --repo-url REPO_URL                Repository URL
-  -b, --branch BRANCH                    Branch
-  -l, --language {java,javascript}       Language
-  -t, --build-tool {maven,gradle,npm}    Build tool
+  -h, --help                 show this help message and exit
+  -r, --repo-url REPO_URL    Repository URL
+  -b, --branch BRANCH        Branch
+  -l, --language             Language
+  -t, --build-tool           Build tool
 ```
 ## Description
 This tool creates a Jenkins pipeline file tailored to your project's needs. It automates the process of setting up Jenkins pipelines for Java and JavaScript projects using either Maven or Gradle as the build tool.
