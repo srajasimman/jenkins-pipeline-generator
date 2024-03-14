@@ -1,6 +1,8 @@
 # Jenkins Pipeline Generator
 This command-line tool generates Jenkins pipeline files based on the provided parameters.
 
+![Contributors](https://img.shields.io/github/contributors/srajasimman/jenkins-pipeline-generator?color=dark-green) ![Forks](https://img.shields.io/github/forks/srajasimman/jenkins-pipeline-generator?style=social) ![Stargazers](https://img.shields.io/github/stars/srajasimman/jenkins-pipeline-generator?style=social) ![Issues](https://img.shields.io/github/issues/srajasimman/jenkins-pipeline-generator) ![License](https://img.shields.io/github/license/srajasimman/jenkins-pipeline-generator) 
+
 ## Usage
 ```
 usage: jenkins-pipeline-generator.py [-h] -r REPO_URL -b BRANCH -l {java,javascript} -t {maven,gradle,npm}
