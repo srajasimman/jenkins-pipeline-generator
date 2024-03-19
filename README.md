@@ -3,7 +3,13 @@ Simple command-line tool generates Jenkins pipeline files based on the provided 
 
 ![Contributors](https://img.shields.io/github/contributors/srajasimman/jenkins-pipeline-generator?color=dark-green) ![Forks](https://img.shields.io/github/forks/srajasimman/jenkins-pipeline-generator?style=social) ![Stargazers](https://img.shields.io/github/stars/srajasimman/jenkins-pipeline-generator?style=social) ![Issues](https://img.shields.io/github/issues/srajasimman/jenkins-pipeline-generator) ![License](https://img.shields.io/github/license/srajasimman/jenkins-pipeline-generator) 
 
-## Usage
+## Web App with Docker
+```sh
+docker pull ghcr.io/srajasimman/jenkins-pipeline-generator:latest
+docker run --rm -p 5000:5000 ghcr.io/srajasimman/jenkins-pipeline-generator:latest
+```
+
+## CLI Usage
 ```
 usage: jenkins-pipeline-generator.py [-h] -r REPO_URL -b BRANCH -l {java,javascript} -t {maven,gradle,npm}
 
@@ -15,6 +21,8 @@ options:
   -b, --branch BRANCH        Branch
   -l, --language             Language
   -t, --build-tool           Build tool
+  -p, --port                 Port to expose the application
+  -d, --deploy               Specifies the deployment step required or not
 ```
 ## Description
 This tool creates a Jenkins pipeline file tailored to your project's needs. It automates the process of setting up Jenkins pipelines for Java and JavaScript projects using either Maven or Gradle as the build tool.
