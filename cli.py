@@ -2,10 +2,10 @@ import argparse
 from jinja2 import Environment, FileSystemLoader
 import os
 
-def generate_build_pipeline(repo_url, branch, language, build_tool, deploy=False):
+def generate_build_pipeline(repo_url, branch, language, build_tool, port, deploy=False):
     # Set up Jinja environment
-    template_dir = os.path.join(os.path.dirname(__file__), 'templates')
-    env = Environment(loader=FileSystemLoader(template_dir))
+    pipelines_dir = os.path.join(os.path.dirname(__file__), 'pipelines')
+    env = Environment(loader=FileSystemLoader(pipelines_dir))
 
     # Load Jinja template
     template = env.get_template('jenkins_pipeline.j2')
@@ -16,6 +16,7 @@ def generate_build_pipeline(repo_url, branch, language, build_tool, deploy=False
         branch=branch,
         language=language,
         build_tool=build_tool,
+        port=port,
         deploy=deploy
     )
 
@@ -33,6 +34,7 @@ def main():
     parser.add_argument('-b', '--branch', type=str, help='Branch', dest='branch')
     parser.add_argument('-l', '--language', type=str, help='Language', dest='language', required=True, choices=options['languages'])
     parser.add_argument('-t', '--build-tool', type=str, help='Build tool', dest='build_tool', required=True, choices=options['build_tools'])
+    parser.add_argument('-p', '--port', type=int, help='Port', dest='port', default=8080)
     parser.add_argument('-d', '--deploy', type=bool, help='Deploy', dest='deploy', default=False)
     
     args = parser.parse_args()
@@ -53,6 +55,7 @@ def main():
         args.branch,
         args.language,
         args.build_tool,
+        args.port,
         args.deploy
     )
 

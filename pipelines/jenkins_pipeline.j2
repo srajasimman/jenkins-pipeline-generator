@@ -98,7 +98,7 @@ pipeline {
             steps {
                 script {
                     sh 'kubectl create deployment $job_name --image=${docker_image}'
-                    sh 'kubectl expose deployment $job_name --type=ClusterIP --port=8080'
+                    sh 'kubectl expose deployment $job_name --type=ClusterIP --port={{ port | default("8080")}}'
                 }
             }
         }
