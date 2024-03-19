@@ -6,7 +6,15 @@
     $(document).ready(function() {
         Prism.highlightAll();
     });
-</script>
-
+    function copyToClipboard(id) {
+      var text = document.getElementById(id).innerText;
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+    }
+  </script>
 </body>
 </html>
