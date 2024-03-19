@@ -1,7 +1,22 @@
 {% include 'header.html' %}
-    <div class="container">
-        <h1 class="mt-4 mb-4">Jenkins Pipeline Generator</h1>
-        <h3 class="mb-4">Generated Pipeline</h3>
-        <pre class="mb-4 p-3 bg-light"><code>{{ pipeline_script }}</code></pre>
-    </div>
+<div class="container">
+    <h1 class="mt-4 mb-4">Jenkins Pipeline Generator</h1>
+    <h3 class="mb-4">Generated Pipeline</h3>
+    <pre class="mb-4 p-3 bg-light"><code>{{ pipeline_script }}</code></pre>
+    <button class="btn btn-primary" onclick="copyToClipboard()">Copy</button>
+    <a class="btn btn-secondary" href="index.html">Back</a>
+</div>
 {% include 'footer.html' %}
+
+<script>
+    function copyToClipboard() {
+        var copyText = document.querySelector("pre");
+        var range = document.createRange();
+        range.selectNode(copyText);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+        window.getSelection().removeAllRanges();
+        alert("Copied the text: " + copyText.innerText);
+    }
+</script>
