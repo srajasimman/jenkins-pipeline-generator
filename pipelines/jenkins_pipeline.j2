@@ -73,6 +73,7 @@ pipeline {
                         ENTRYPOINT ["python", "app.py"]
                         ''')
                         {% endif %}
+                        }
                     else {
                         print('Dockerfile already exists')
                     }
